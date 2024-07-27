@@ -41,6 +41,7 @@ export function Login() {
 
       // Guardar el token en localStorage
       localStorage.setItem("token", token);
+      console.log(token)
 
       // Redirigir al usuario a la página de inicio (ejemplo: "/Home")
       navigate("/Home");
@@ -88,6 +89,7 @@ export function Login() {
               </div>
             </form>
           </CardData>
+          
         </AuthContainer>
       </MainBackground>
     </>
