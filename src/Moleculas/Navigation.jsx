@@ -3,12 +3,12 @@ export function Navigation() {
       <>
         <nav className="bg-black bg-opacity-10 p-3 md:p-10">
           <ul className="text-white  md:mt-10">
-            <li>
+          <li className="md:mt-6">
               <a
-                href="/Home"
+                href="/DatosAnimalito"
                 className="block text-center p-2 hover:bg-white hover:text-black transition-colors duration-200"
               >
-                Inicio
+                Datos General
               </a>
             </li>
             <li className="md:mt-6">
@@ -29,21 +29,13 @@ export function Navigation() {
             </li>
             <li className="md:mt-6">
               <a
-                href="/DatosAnimalito"
-                className="block text-center p-2 hover:bg-white hover:text-black transition-colors duration-200"
-              >
-                Datos General
-              </a>
-            </li>
-            <li className="md:mt-6">
-              <a
                 href="/Personaliza"
                 className="block text-center p-2 hover:bg-white hover:text-black transition-colors duration-200"
               >
                 Personaliza
               </a>
             </li>
-            <li className="mt-6 md:mt-20">
+            <li className="mt-6 md:mt-28">
               <a
                 href="/"
                 className="block text-center p-2 hover:bg-white hover:text-black transition-colors duration-200"

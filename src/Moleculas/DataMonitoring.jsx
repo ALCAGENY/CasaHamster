@@ -1,76 +1,69 @@
-import React from 'react';
-import { Titles, Paragraphs } from "../Atomos/Texts";
-import { ButtonI } from "../Atomos/Button";
+import React, { useEffect, useState } from 'react';
+import { Titles } from "../Atomos/Texts";
 import { DoubleContainer } from './DoubleContainer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faThermometerHalf, faTint } from '@fortawesome/free-solid-svg-icons';
+import io from "socket.io-client";
+
+const socket = io('http://54.165.181.210', {
+    extraHeaders: {
+        'Authorization': '123ADWAWDAWDQWDAD33'
+    }
+});
+
+socket.on('connect', () => {
+    console.clear();
+    console.log('Conectado al servidor');
+});
+
+socket.on('sensors', (data) => { // Escuchar el evento emitido por el servidor
+    console.log('Datos recibidos del servidor:', data);
+    // procesar y mostrar los datos en el frontend
+});
+
+socket.on('connect_error', (err) => {
+    console.error('Error de conexión:', err.message);
+});
+
+socket.on('disconnect', () => {
+    console.log('Desconectado del servidor');
+});
 
 export function DataMonitoring() {
-  const datos = [
-    { datos: "Temperatura", informacion: "19G" },
-    { datos: "Humedad", informacion: "50H" },
-  ];
+  const [datos, setDatos] = useState([
+    { datos: "Temperatura", informacion: "19°C", icono: faThermometerHalf, color: "bg-red-200" },
+    { datos: "Humedad", informacion: "50%", icono: faTint, color: "bg-blue-200" },
+  ]);
+
+  useEffect(() => {
+    socket.on('sensors', (data) => {
+      const { temperature, humidity } = data;
+      setDatos([
+        { datos: "Temperatura", informacion: `${temperature}°C`, icono: faThermometerHalf, color: "bg-red-200" },
+        { datos: "Humedad", informacion: `${humidity}%`, icono: faTint, color: "bg-blue-200" },
+      ]);
+    });
+
+    return () => {
+      socket.off('sensors');
+    };
+  }, []);
 
   return (
-    <DoubleContainer>
-      <article className="w-1/2 h-full p-3">
+    <DoubleContainer className='flex justify-center'>
+      <article className="w-full md:w-1/2 h-full p-3">
         <header className="mt-5">
-          <Titles text="Tabla Datos" />
+          <Titles text="Datos de Monitoreo" />
         </header>
-        <section className="bg-black bg-opacity-10 text-center p-4 mt-24">
-          <table className="w-full border-collapse border border-gray-200">
-            <thead className="bg-black bg-opacity-10">
-              <tr>
-                <th className="border border-gray-600 px-4 py-2">Datos</th>
-                <th className="border border-gray-600 px-4 py-2">Información</th>
-              </tr>
-            </thead>
-            <tbody>
-              {datos.map((item, index) => (
-                <tr key={index}>
-                  <td className="border border-gray-600 px-4 py-2">{item.datos}</td>
-                  <td className="border border-gray-600 px-4 py-2">{item.informacion}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
-      </article>
-
-      <article className="w-1/2 h-full p-3">
-        <header className="mt-5">
-          <Titles text="Control De Datos" />
-        </header>
-        <section className="bg-black bg-opacity-10 text-center p-4 mt-24">
-          <div className="flex">
-            <section className="mb-4 w-1/2">
-              <Paragraphs className="p-1" text="Abrir Puerta:" />
-              <ButtonI className="bg-black opacity-30 mt-1" text="Abrir Puerta" />
-            </section>
-            <section className="mb-4 w-1/2">
-              <Paragraphs className="p-1" text="Cerrar Puerta:" />
-              <ButtonI className="bg-black opacity-30 mt-1" text="Cerrar Puerta" />
-            </section>
-          </div>
-
-          <div className="flex">
-            <section className="mb-4 w-1/2">
-              <Paragraphs className="p-1" text="Dar Comida:" />
-              <ButtonI className="bg-black opacity-30 mt-1" text="Dar Comida" />
-            </section>
-            <section className="mb-4 w-1/2">
-              <Paragraphs className="p-1" text="Detener Comida:" />
-              <ButtonI className="bg-black opacity-30 mt-1" text="Detener Comida" />
-            </section>
-          </div>
-
-          <div className="flex">
-            <section className="mb-4 w-1/2">
-              <Paragraphs className="p-1" text="Otra Cosa:" />
-              <ButtonI className="bg-black opacity-30 mt-1" text="Otra Cosa" />
-            </section>
-            <section className="mb-4 w-1/2">
-              <Paragraphs className="p-1" text="Otra Cosa:" />
-              <ButtonI className="bg-black opacity-30 mt-1" text="Otra Cosa" />
-            </section>
+        <section className="text-center p-4 mt-6 md:mt-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {datos.map((item, index) => (
+              <div key={index} className={`p-4 rounded-lg shadow-md border border-gray-200 ${item.color}`}>
+                <FontAwesomeIcon icon={item.icono} className="text-4xl mb-4" />
+                <h3 className="text-xl font-semibold mb-2">{item.datos}</h3>
+                <p className="text-2xl font-bold">{item.informacion}</p>
+              </div>
+            ))}
           </div>
         </section>
       </article>

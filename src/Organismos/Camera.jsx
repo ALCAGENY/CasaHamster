@@ -1,7 +1,8 @@
 import { MainBackground } from "../Moleculas/MainBackground"
 import { AuthContainer } from "../Moleculas/AuthContainer"
 import { Navigation } from "../Moleculas/Navigation"
-import { InteractionCamera } from "../Moleculas/InteractionCamera"
+import WebcamControl from "./WebCam"
+
 
 
 export function Camera (){
@@ -9,7 +10,9 @@ export function Camera (){
        <MainBackground>
         <AuthContainer className="bg-black animate-fade-up">
            <Navigation/>
-          <InteractionCamera/>
+           <div className="w-4/5 mt-10">
+           <WebcamControl/>
+           </div>
         </AuthContainer>
     </MainBackground>
     </>)

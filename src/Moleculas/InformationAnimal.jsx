@@ -1,76 +1,107 @@
-import { DoubleContainer } from "./DoubleContainer"
-import { Titles } from "../Atomos/Texts"
+import { useState, useEffect } from "react";
+import { DoubleContainer } from "./DoubleContainer";
+import { Titles } from "../Atomos/Texts";
 
-export function InformationAnimal(){
+export function InformationAnimal() {
+  const [datosAnimal, setDatosAnimal] = useState([]);
+  const [datosPerfil, setDatosPerfil] = useState([]);
 
-    const datosAnimal = [
-        { datos: "Nombre:", informacion: "Pepe" },
-        { datos: "Raza:", informacion: "Perro" },
-        { datos: "Especie:", informacion: "Canino" },
-        { datos: "Edad:", informacion: 5 },
-        { datos: "Género:", informacion: "Macho" },
-        { datos: "Color:", informacion: "Marrón" },
-        { datos: "Tamaño:", informacion: "Mediano" },
-        { datos: "Notas:", informacion: "Sin observaciones" },
-      ];
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
 
-      const datosPerfil = [
-        { datos: "Nombre:", informacion: "Chikiz" },
-        { datos: "Apellido:", informacion: "Gutierrez" },
-        { datos: "Correo:", informacion: "GUTIERREZ@gmail.com" },
-      ]
+      try {
+        const response = await fetch(`http://localhost:8080/api/v1/auth/${userId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        });
 
-    return(<>
-    <DoubleContainer>
-        <article className="w-1/2 h-full p-3">
+        if (response.ok) {
+          const data = await response.json();
+          
+          setDatosPerfil([
+            { datos: "Nombre", informacion: data.name },
+            { datos: "Apellido", informacion: data.lastname },
+            { datos: "Email", informacion: data.email }
+          ]);
+          
+          if (data.animals && data.animals.length > 0) {
+            const animal = data.animals[0];
+            setDatosAnimal([
+              { datos: "Nombre", informacion: animal.name },
+              { datos: "Raza", informacion: animal.breed },
+              { datos: "Especie", informacion: animal.species },
+              { datos: "Edad", informacion: animal.age },
+              { datos: "Género", informacion: animal.gender },
+              { datos: "Color", informacion: animal.color },
+              { datos: "Tamaño", informacion: animal.size },
+              { datos: "Notas", informacion: animal.notes }
+            ]);
+          }
+        } else {
+          console.error("Error fetching data:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error in fetch:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <DoubleContainer className="gap-20">
+      <article className="w-1/2 h-full p-3">
         <header className="mt-10">
-            <Titles text="Datos Usuario"/>
+          <Titles text="Datos Usuario" />
         </header>
-        <section className="bg-black bg-opacity-10 text-center p-4 mt-5" >
-        
-      <table className="w-full border-collapse border border-gray-200">
-        <thead className="bg-black bg-opacity-10">
-          <tr>
-            <th className="border border-gray-600 px-4 py-2">Datos</th>
-            <th className="border border-gray-600 px-4 py-2">Informacion</th>
-          </tr>
-        </thead>
-        <tbody>
-          {datosPerfil.map((item, index) => (
-            <tr key={index}>
-              <td className="border border-gray-600 px-4 py-2">{item.datos}</td>
-              <td className="border border-gray-600 px-4 py-2">{item.informacion}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <section className="text-center p-4 mt-5">
+          <table className="w-full border-collapse border border-gray-300 shadow-lg rounded-lg">
+            <thead className="bg-blue-700 text-white">
+              <tr>
+                <th className="border border-gray-300 px-4 py-2">Datos</th>
+                <th className="border border-gray-300 px-4 py-2">Información</th>
+              </tr>
+            </thead>
+            <tbody className="">
+              {datosPerfil.map((item, index) => (
+                <tr key={index} className="hover:bg-blue-300 opacity-50">
+                  <td className="border border-gray-300 px-4 py-2">{item.datos}</td>
+                  <td className="border border-gray-300 px-4 py-2">{item.informacion}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </section>
-        </article>
+      </article>
 
-        <article className="w-1/2 h-full p-3">
+      <article className="w-1/2 h-full p-3">
         <header className="mt-10">
-            <Titles text="Datos Animalito"/>
+          <Titles text="Datos Animalito" />
         </header>
-        <section className="bg-black bg-opacity-10 text-center p-4 mt-5" >
-        
-      <table className="w-full border-collapse border border-gray-200">
-        <thead className="bg-black bg-opacity-10">
-          <tr>
-            <th className="border border-gray-600 px-4 py-2">Datos</th>
-            <th className="border border-gray-600 px-4 py-2">Informacion</th>
-          </tr>
-        </thead>
-        <tbody>
-          {datosAnimal.map((item, index) => (
-            <tr key={index}>
-              <td className="border border-gray-600 px-4 py-2">{item.datos}</td>
-              <td className="border border-gray-600 px-4 py-2">{item.informacion}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <section className="text-center p-4 mt-5">
+          <table className="w-full border-collapse border border-gray-300 shadow-lg rounded-lg">
+            <thead className="bg-green-500 text-white">
+              <tr>
+                <th className="border border-gray-300 px-4 py-2">Datos</th>
+                <th className="border border-gray-300 px-4 py-2">Información</th>
+              </tr>
+            </thead>
+            <tbody className="">
+              {datosAnimal.map((item, index) => (
+                <tr key={index} className="hover:bg-green-200 opacity-50">
+                  <td className="border border-gray-300 px-4 py-2">{item.datos}</td>
+                  <td className="border border-gray-300 px-4 py-2">{item.informacion}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </section>
-        </article>
+      </article>
     </DoubleContainer>
-    </>)
+  );
 }

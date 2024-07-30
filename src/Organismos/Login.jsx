@@ -38,13 +38,16 @@ export function Login() {
 
       const data = await response.json();
       const token = data.token; // Suponiendo que el token se devuelve como 'token' en la respuesta
+      const userId = data.id; // Suponiendo que el ID del usuario se devuelve como 'id' en la respuesta
 
-      // Guardar el token en localStorage
+      // Guardar el token y el ID del usuario en localStorage
       localStorage.setItem("token", token);
-      console.log(token)
+      localStorage.setItem("userId", userId);
+      console.log("Token:", token);
+      console.log("User ID:", userId);
 
       // Redirigir al usuario a la página de inicio (ejemplo: "/Home")
-      navigate("/Home");
+      navigate("/DatosAnimalito");
     } catch (error) {
       setError(error.message);
     }
