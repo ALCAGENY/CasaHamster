@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 import ImgFormAnimal from "../assets/Img/ImgFormAnimal.jpeg";
 import { Paragraphs } from "../Atomos/Texts";
 import { InputT } from "../Atomos/Input";
@@ -15,6 +16,8 @@ export function FormAnimal() {
     size: "",
     notes: ""
   });
+
+  const navigate = useNavigate(); // Inicializa useNavigate
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,10 +46,12 @@ export function FormAnimal() {
         throw new Error(errorData.message || "Error al registrar el animal");
       }
 
-      // Handle successful registration (e.g., show a success message or redirect)
-      console.log("Animal registrado exitosamente");
+      // Mostrar alerta y redirigir a la página de DatosAnimalito
+      alert("¡Registro exitoso! Cuidaremos de Tu Animalito :)");
+      navigate("/DatosAnimalito"); // Redirige a la página deseada
     } catch (error) {
       console.error("Error en el registro:", error);
+      alert("Error en el registro: " + error.message);
     }
   };
 

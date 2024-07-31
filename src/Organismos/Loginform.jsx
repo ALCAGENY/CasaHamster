@@ -50,13 +50,16 @@ export function LoginForm() {
       if (response.ok) {
         const data = await response.json();
         console.log("Registro exitoso:", data);
+        alert("Registro exitoso :) DE CLIK PARA AVANZAR");
         navigate("/");
       } else {
         const errorData = await response.json();
         console.error("Error en el registro:", errorData);
+        setFormError("Error en el registro. Por favor, intenta de nuevo.");
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
+      setFormError("Error en la solicitud. Por favor, intenta de nuevo.");
     }
   };
 

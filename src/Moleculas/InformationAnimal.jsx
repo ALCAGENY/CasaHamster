@@ -67,9 +67,9 @@ export function InformationAnimal() {
                 <th className="border border-gray-300 px-4 py-2">Información</th>
               </tr>
             </thead>
-            <tbody className="">
+            <tbody className="bg-blue-100">
               {datosPerfil.map((item, index) => (
-                <tr key={index} className="hover:bg-blue-300 opacity-50">
+                <tr key={index} className="hover:bg-blue-200">
                   <td className="border border-gray-300 px-4 py-2">{item.datos}</td>
                   <td className="border border-gray-300 px-4 py-2">{item.informacion}</td>
                 </tr>
@@ -91,9 +91,9 @@ export function InformationAnimal() {
                 <th className="border border-gray-300 px-4 py-2">Información</th>
               </tr>
             </thead>
-            <tbody className="">
+            <tbody className="bg-green-100">
               {datosAnimal.map((item, index) => (
-                <tr key={index} className="hover:bg-green-200 opacity-50">
+                <tr key={index} className="hover:bg-green-200">
                   <td className="border border-gray-300 px-4 py-2">{item.datos}</td>
                   <td className="border border-gray-300 px-4 py-2">{item.informacion}</td>
                 </tr>
