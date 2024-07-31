@@ -12,7 +12,7 @@ export function InformationAnimal() {
       const userId = localStorage.getItem("userId");
 
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/auth/${userId}`, {
+        const response = await fetch(`http://34.236.185.151/api/v1/auth/${userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

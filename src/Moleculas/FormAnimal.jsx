@@ -29,7 +29,7 @@ export function FormAnimal() {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:8080/api/v1/animal/register", {
+      const response = await fetch("http://34.236.185.151/api/v1/animal/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

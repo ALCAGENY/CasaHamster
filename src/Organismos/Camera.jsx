@@ -1,7 +1,7 @@
 import { MainBackground } from "../Moleculas/MainBackground"
 import { AuthContainer } from "../Moleculas/AuthContainer"
 import { Navigation } from "../Moleculas/Navigation"
-import WebcamControl from "./WebCam"
+import WebcamControl from "../Moleculas/WebCam"
 
 
 

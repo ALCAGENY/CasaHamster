@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DoubleContainer } from '../Moleculas/DoubleContainer';
+import { DoubleContainer } from './DoubleContainer';
 
 export default function WebcamControl() {
   const [webcamStream, setWebcamStream] = useState(null);
@@ -7,7 +7,7 @@ export default function WebcamControl() {
 
   const startCamera = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/v1/camera/on', {
+      const response = await fetch('http://34.236.185.151/api/v1/camera/on', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export default function WebcamControl() {
 
   const stopCamera = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/v1/camera/off', {
+      const response = await fetch('http://34.236.185.151/api/v1/camera/off', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

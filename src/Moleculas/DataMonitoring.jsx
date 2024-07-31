@@ -3,51 +3,42 @@ import { Titles } from "../Atomos/Texts";
 import { DoubleContainer } from './DoubleContainer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThermometerHalf, faTint } from '@fortawesome/free-solid-svg-icons';
-import io from "socket.io-client";
-
-const socket = io('http://54.165.181.210', {
-    extraHeaders: {
-        'Authorization': '123ADWAWDAWDQWDAD33'
-    }
-});
-
-socket.on('connect', () => {
-    console.clear();
-    console.log('Conectado al servidor');
-});
-
-socket.on('sensors', (data) => { // Escuchar el evento emitido por el servidor
-    console.log('Datos recibidos del servidor:', data);
-    // procesar y mostrar los datos en el frontend
-});
-
-socket.on('connect_error', (err) => {
-    console.error('Error de conexión:', err.message);
-});
-
-socket.on('disconnect', () => {
-    console.log('Desconectado del servidor');
-});
+import { useSocket } from '../Context/soquet';
 
 export function DataMonitoring() {
-  const [datos, setDatos] = useState([
-    { datos: "Temperatura", informacion: "19°C", icono: faThermometerHalf, color: "bg-red-200" },
-    { datos: "Humedad", informacion: "50%", icono: faTint, color: "bg-blue-200" },
-  ]);
+  const { sensorData } = useSocket();
+  const [datos, setDatos] = useState([]);
 
   useEffect(() => {
-    socket.on('sensors', (data) => {
-      const { temperature, humidity } = data;
-      setDatos([
-        { datos: "Temperatura", informacion: `${temperature}°C`, icono: faThermometerHalf, color: "bg-red-200" },
-        { datos: "Humedad", informacion: `${humidity}%`, icono: faTint, color: "bg-blue-200" },
-      ]);
-    });
+    if (sensorData && Array.isArray(sensorData)) {
+      const updatedDatos = sensorData.map((item) => {
+        let icono, color;
 
-    return () => {
-      socket.off('sensors');
-    };
-  }, []);
+        switch (item.datos) {
+          case "Temperatura":
+            icono = faThermometerHalf;
+            color = "bg-red-200";
+            break;
+          case "Humedad":
+            icono = faTint;
+            color = "bg-blue-200";
+            break;
+          default:
+            icono = faThermometerHalf; 
+            color = "bg-gray-200"; 
+        }
+
+        return {
+          datos: item.datos,
+          informacion: `${item.informacion}${item.datos === "Temperatura" ? '°C' : '%'}`,
+          icono,
+          color,
+        };
+      });
+
+      setDatos(updatedDatos);
+    }
+  }, [sensorData]);
 
   return (
     <DoubleContainer className='flex justify-center'>
